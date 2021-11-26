@@ -1,0 +1,78 @@
+---
+title: "age-deprivation-cleaning"
+author: "kaifab1"
+date: "26/11/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+### Load packages
+We will be using the readr, tidyr and dplyr packages from the Tidyverse family of packages. We will also load the "here" package that we will use to read in our data.
+
+```{r}
+library(tidyverse)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(here)
+```
+
+## Answer to Question 1 - 
+
+The problem with the values and age deprivation is that within the age and SIMD, there are invalid entries.
+
+
+
+```{r}
+age_simd <- read_csv("input-data/raw/population_demographics.csv")
+head(age_simd)
+summary(age_simd)
+## some useful commands to visually inspect the data
+View(age_simd) #allows to view the data
+glimpse(age_simd) #displays variables and some entries
+plot(age_simd$age,age_simd$deprivation)
+```
+
+### Other useful packages 
+Loading up psych package is also useful for some descriptive statistics
+
+install.packages("psych")
+library(psych)
+describe(age_simd)
+install.packages("skimr")
+library(skimr)
+skim(age_simd)
+
+
+## Data Cleaning 
+
+Previous exploration of the data indicated several 150s which are values that are unlikely for age. These values are being excluded from the set. 
+
+```{r}
+age_flr_150 <- filter(age_simd, age<150)
+summary(age_flr_150)
+
+```
+
+Now to remove the NAs for deprivation
+
+```{r}
+fltr_age_simd <- filter(age_flr_150, !is.na(deprivation))
+summary(fltr_age_simd)
+```
+
+To explore data further
+```{r}
+library(psych)
+describe(fltr_age_simd)
+```
+
