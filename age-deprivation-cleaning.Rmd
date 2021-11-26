@@ -70,4 +70,9 @@ fltr_age_simd <- filter(age_flr_150, !is.na(deprivation))
 summary(fltr_age_simd)
 ```
 
-
+To explore data further
+```{r}
+library(psych)
+describe(fltr_age_simd)
+```
+=======
